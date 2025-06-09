@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="pageTitle">عبد الله غيث - شاعر ومبرمج .</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=El+Messiri:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        :root {
+            --bg-color: #050818;
+            --primary-glow: rgba(115, 103, 240, 0.5);
+            --secondary-glow: rgba(56, 189, 248, 0.5);
+            --tertiary-glow: rgba(234, 128, 252, 0.4);
+            --text-primary: #e8eaf6;
+            --text-secondary: #b0b4d1;
+            --accent-1: #7367f0;
+            --accent-2: #38bdf8;
+            --accent-3: #ea80fc;
+            --accent-1-rgb: 115, 103, 240;
+            --accent-2-rgb: 56, 189, 248;
+            --accent-3-rgb: 234, 128, 252;
+            --card-bg: rgba(17, 23, 53, 0.8);
+            --card-border: rgba(115, 103, 240, 0.3);
+            --card-highlight: rgba(115, 103, 240, 0.16);
+            --card-shadow: rgba(0, 0, 0, 0.42);
+            --glass-effect: blur(16px) saturate(180%);
+            --font-heading: 'El Messiri', serif;
+            --font-body: 'Cairo', sans-serif;
+            --transition-smooth: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --transition-fast: all 0.3s ease;
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --bg-hue-rotate-speed: 30s;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background-color: var(--primary-glow); color: var(--text-primary); }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100dvh;
+            padding: 50px 20px;
+            position: relative;
+            text-align: center;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 10% 90%, var(--primary-glow) 0%, transparent 50%),
+                              radial-gradient(circle at 90% 10%, var(--secondary-glow) 0%, transparent 55%),
+                              radial-gradient(circle at 50% 50%, var(--tertiary-glow) 0%, transparent 60%);
+            background-attachment: fixed;
+            transition: background-color 0.5s ease;
+            animation: backgroundHueRotate var(--bg-hue-rotate-speed) linear infinite alternate;
+        }
+        @keyframes backgroundHueRotate {
+             0% { filter: hue-rotate(0deg) saturate(1); }
+             100% { filter: hue-rotate(30deg) saturate(1.1); }
+         }
+        body.light-mode {
+             --bg-color: #f4f5f7;
+             --text-primary: #1c1e21;
+             --text-secondary: #555b6e;
+             --card-bg: rgba(255, 255, 255, 0.9);
+             --card-border: rgba(0, 0, 0, 0.1);
+             --card-highlight: rgba(0, 0, 0, 0.05);
+             --card-shadow: rgba(99, 99, 99, 0.15);
+             --primary-glow: rgba(63, 81, 181, 0.25);
+             --secondary-glow: rgba(3, 169, 244, 0.25);
+             --tertiary-glow: rgba(233, 30, 99, 0.2);
+             --accent-1: #3f51b5;
+             --accent-2: #03a9f4;
+             --accent-3: #e91e63;
+             --accent-1-rgb: 63, 81, 181;
+             --accent-2-rgb: 3, 169, 244;
+             --accent-3-rgb: 233, 30, 99;
+             animation: none;
+             background-image: none;
+         }
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            width: 0%; z-index: 1001; transition: width 0.1s linear;
+            background-size: 200% 100%;
+            animation: gradientUnderline 3s linear infinite;
+        }
+        #tsparticles-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
+            display: flex; flex-direction: column;
+            justify-content: flex-start; /* Align items to the top */
+            align-items: center;
+            padding-top: 50px; /* Add padding from the top */
+            z-index: 1000; opacity: 1;
+            transition: opacity 0.8s ease-in-out 0.5s, visibility 0s linear 1.3s;
+            visibility: visible; pointer-events: all;
+        }
+        #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        #preloader .spinner { width: 50px; height: 50px; border: 4px solid var(--card-border); border-top-color: var(--accent-1); border-left-color: var(--accent-2); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 30px; }
+        #welcome-text { font-family: var(--font-heading); font-size: clamp(1.8em, 6vw, 2.6em); font-weight: 700; color: var(--text-secondary); padding: 0 20px; margin-bottom: 20px; opacity: 0; transform: scale(0.95) translateY(0); transition: opacity 0.4s ease, transform 0.4s ease; min-height: 1.2em; }
+        #welcome-text.visible { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .language-switcher, .theme-switcher { position: fixed; top: 20px; z-index: 999; display: flex; gap: 10px; background: var(--card-bg); padding: 8px 12px; border-radius: 20px; border: 1px solid var(--card-border); box-shadow: 0 4px 15px var(--card-shadow); backdrop-filter: var(--glass-effect); -webkit-backdrop-filter: var(--glass-effect); }
+        .language-switcher { left: 20px; }
+        .theme-switcher { right: 20px; }
+        .language-switcher button, .theme-switcher button { background: none; border: none; color: var(--text-secondary); font-size: 1.1em; cursor: pointer; transition: var(--transition-fast); padding: 5px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; }
+        .language-switcher button.active, .theme-switcher button:hover, .language-switcher button:hover { color: var(--accent-1); background-color: var(--card-highlight); transform: scale(1.1); }
+        .language-switcher button:active, .theme-switcher button:active { animation: buttonClickAnim 0.3s ease; }
+        @keyframes buttonClickAnim { 0%, 100% { transform: scale(1.1); } 50% { transform: scale(0.95); } }
+        .theme-switcher button .fa-moon { display: block; }
+        .theme-switcher button .fa-sun { display: none; }
+        body.light-mode .theme-switcher button .fa-moon { display: none; }
+        body.light-mode .theme-switcher button .fa-sun { display: block; }
+        a:focus, button:focus, [tabindex]:focus { outline: none; }
+        a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--primary-glow); border-radius: 4px; }
+        .main-container { max-width: 1100px; width: 100%; margin: 80px auto 40px auto; display: flex; flex-direction: column; gap: 60px; position: relative; z-index: 10; }
+        .profile-section, .section-card { transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease; will-change: transform, box-shadow; }
+        .profile-section:hover, .section-card:hover { transform: perspective(1200px) rotateY(var(--rotateY, 0)) rotateX(var(--rotateX, 0)) translateY(-12px) scale(1.03); box-shadow: 0 22px 55px rgba(0,0,0,0.45), 0 0 30px var(--primary-glow); }
+        .profile-section { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 45px 30px; background: var(--card-bg); border-radius: 25px; border: 1px solid var(--card-border); box-shadow: 0 12px 35px var(--card-shadow); backdrop-filter: var(--glass-effect); -webkit-backdrop-filter: var(--glass-effect); position: relative; overflow: hidden; }
+        .profile-section::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, var(--card-highlight) 0%, transparent 65%); opacity: 0; transition: opacity 0.5s ease, transform 0.5s ease; pointer-events: none; transform: scale(0); }
+        .profile-section:hover::before { opacity: 1; transform: scale(1.5); }
+        .profile-pic {
+            width: 170px; height: 170px;
+            border-radius: 50%; border: 6px solid transparent;
+            background-image: url('https://i.ibb.co/9myWN498/IMG-20250402-203942-359.jpg'), linear-gradient(var(--card-bg), var(--card-bg)), linear-gradient(45deg, var(--accent-1), var(--accent-2), var(--accent-3));
+            background-origin: border-box, padding-box, border-box;
+            background-clip: content-box, padding-box, border-box;
+            margin-bottom: 35px; box-shadow: 0 0 35px rgba(var(--accent-1-rgb), 0.35);
+            transition: var(--transition-smooth);
+            background-size: cover, auto, auto;
+            background-position: center; position: relative; z-index: 1;
+            background-color: var(--card-bg);
+        }
+        .profile-section:hover .profile-pic { transform: scale(1.12) rotate(6deg); box-shadow: 0 0 60px var(--primary-glow); border-width: 5px; }
+        header h1 { font-family: var(--font-heading); font-size: clamp(3em, 7vw, 4.2em); color: var(--text-primary); margin-bottom: 15px; font-weight: 900; letter-spacing: 1.5px; position: relative; display: block; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s; }
+        header h1.visible { opacity: 1; transform: translateY(0); }
+        header h1::after { content: ''; width: 0%; height: 5px; background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3)); background-size: 200% 100%; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); border-radius: 3px; transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.5s; animation: gradientUnderline 4s linear infinite; }
+        .profile-section.aos-animate h1::after { width: 80%; }
+        @keyframes gradientUnderline { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        header .subtitle { font-family: var(--font-body); font-size: clamp(1.4em, 3.5vw, 1.7em); color: var(--text-secondary); font-weight: 600; letter-spacing: 1.5px; margin-top: 25px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out 0.4s, transform 0.6s ease-out 0.4s; }
+        header .subtitle.visible { opacity: 1; transform: translateY(0); }
+        .links-and-skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 45px; width: 100%; }
+        .section-card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--card-border); padding: 40px; box-shadow: 0 10px 30px var(--card-shadow); backdrop-filter: var(--glass-effect); -webkit-backdrop-filter: var(--glass-effect); }
+        .section-card h2 { font-family: var(--font-heading); font-size: clamp(1.8em, 4.5vw, 2.2em); color: var(--accent-1); margin-bottom: 45px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 15px; border-bottom: 2px solid var(--card-border); padding-bottom: 20px; position: relative; }
+        .section-card h2 span { display: inline-block; transition: opacity 0.25s ease-out, transform 0.25s ease-out; }
+        .section-card h2::after { content: ''; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); transition: width 0.6s ease 0.1s; }
+        .section-card:hover h2::after { width: 65%; }
+        .section-card h2 i { font-size: 0.9em; opacity: 0.85; transition: var(--transition-bounce); }
+        .section-card:hover h2 i { transform: rotate(-15deg) scale(1.25); opacity: 1; color: var(--accent-2); }
+        .social-links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); gap: 25px; }
+        .social-links-grid a { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: rgba(var(--accent-1-rgb), 0.1); color: var(--text-secondary); text-decoration: none; padding: 18px 12px; border-radius: 16px; border: 1px solid transparent; transition: var(--transition-bounce), box-shadow 0.3s ease, background-color 0.3s ease; font-size: clamp(0.95em, 2.2vw, 1.05em); font-weight: 600; width: 100%; overflow: hidden; z-index: 1; box-shadow: 0 6px 15px rgba(0,0,0, 0.28); aspect-ratio: 1 / 1; will-change: transform; }
+        .social-links-grid a .icon-container { width: 55px; height: 55px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.08); transition: var(--transition-fast); }
+        .social-links-grid a i { font-size: clamp(2em, 4.5vw, 2.4em); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .social-links-grid a span { display: inline-block; transition: opacity 0.25s ease-out, transform 0.25s ease-out; font-weight: 700; }
+        .social-links-grid a::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 16px; border: 1px solid var(--card-border); z-index: -1; transition: var(--transition-fast); box-shadow: inset 0 0 12px rgba(0,0,0,0.25); }
+        .social-links-grid a::after { content: ""; position: absolute; top: -110%; left: -210%; width: 200%; height: 200%; opacity: 0; transform: rotate(30deg); background: linear-gradient( to right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.13) 77%, rgba(255, 255, 255, 0.5) 92%, rgba(255, 255, 255, 0.0) 100% ); transition: opacity 0.6s ease 0.1s, top 0.7s ease 0.1s, left 0.7s ease 0.1s; }
+        .social-links-grid a:hover::after { opacity: 1; top: -30%; left: -30%; }
+        .social-links-grid a:hover { transform: scale(1.09) translateY(-9px); box-shadow: 0 14px 30px rgba(0,0,0, 0.38), 0 0 18px var(--tertiary-glow); color: var(--text-primary); background-color: rgba(var(--accent-1-rgb), 0.18); }
+        .social-links-grid a:hover::before { border-color: var(--accent-3); box-shadow: inset 0 0 18px rgba(var(--accent-3-rgb), 0.25); }
+        .social-links-grid a:hover .icon-container { background: rgba(var(--accent-3-rgb), 0.3); transform: scale(1.05); }
+        .social-links-grid a:hover i { transform: scale(1.25) rotate(-9deg); }
+        .social-links-grid a.instagram i { color: #E1306C; }
+        .social-links-grid a.instagram:hover::before { border-color: #E1306C; box-shadow: inset 0 0 18px rgba(225, 48, 108, 0.25); }
+        .social-links-grid a.instagram:hover .icon-container { background: rgba(225, 48, 108, 0.3); }
+        .social-links-grid a.tiktok i { color: #fff; }
+        .social-links-grid a.tiktok .icon-container { background-color: #010101; border: 1px solid #69C9D0;}
+        .social-links-grid a.tiktok:hover::before { border-color: #ff0050; box-shadow: inset 0 0 18px rgba(255, 0, 80, 0.25);}
+        .social-links-grid a.tiktok:hover .icon-container { background-color: #111; border-color: #ff0050; }
+        .social-links-grid a[class*="telegram"] i { color: #2AABEE; }
+        .social-links-grid a[class*="telegram"]:hover::before { border-color: #2AABEE; box-shadow: inset 0 0 18px rgba(42, 171, 238, 0.25); }
+        .social-links-grid a[class*="telegram"]:hover .icon-container { background: rgba(42, 171, 238, 0.3); }
+        .social-links-grid a:active { transform: scale(0.94) translateY(0); transition-duration: 0.1s; }
+        .skills-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .skills-list li { background-color: rgba(var(--accent-2-rgb), 0.12); padding: 13px 24px; border-radius: 28px; font-size: 1.08em; font-weight: 600; color: var(--text-secondary); border: 1px solid transparent; transition: var(--transition-bounce); cursor: pointer; box-shadow: inset 0 1px 5px rgba(0,0,0,0.3); user-select: none; -webkit-user-select: none; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; will-change: transform; }
+        .skills-list li::before { content: ""; position: absolute; inset: 0; border-radius: 28px; border: 1px solid rgba(var(--accent-2-rgb), 0.35); transition: border-color 0.3s ease; z-index: 0; }
+        .skills-list li i { font-size: 1.5em; color: var(--accent-2); opacity: 0.9; transition: var(--transition-fast); z-index: 1; }
+        .skills-list li span { z-index: 1; display: inline-block; transition: opacity 0.25s ease-out, transform 0.25s ease-out; }
+        .skills-list li:hover { color: var(--text-primary); background-color: rgba(var(--accent-2-rgb), 0.22); transform: translateY(-7px) scale(1.1); box-shadow: 0 10px 25px rgba(var(--accent-2-rgb), 0.25); }
+        .skills-list li:hover::before { border-color: var(--accent-2); }
+        .skills-list li:hover i { color: var(--accent-2); opacity: 1; transform: rotate(12deg) scale(1.2); }
+        .skills-list li:active { transform: translateY(0) scale(0.95); transition-duration: 0.1s; }
+        .skills-list li.clicked-effect { animation: skillClick 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes skillClick { 0% { transform: scale(1.1) translateY(-7px); } 30% { transform: scale(0.9) translateY(-2px); background-color: rgba(var(--accent-2-rgb), 0.35); box-shadow: 0 3px 8px rgba(var(--accent-2-rgb), 0.2); } 100% { transform: scale(1) translateY(0); background-color: rgba(var(--accent-2-rgb), 0.22); box-shadow: inset 0 1px 5px rgba(0,0,0,0.3); } }
+        [data-aos] { pointer-events: none; }
+        .aos-animate { pointer-events: auto; }
+        .lang-transition-element { transition: opacity 0.25s ease-out, transform 0.25s ease-out !important; }
+        body.lang-switching .lang-transition-element { opacity: 0 !important; transform: translateY(15px) !important; }
+        @media (max-width: 768px) {
+            .links-and-skills-container { grid-template-columns: 1fr; }
+            .language-switcher { left: 10px; top: 10px; }
+            .theme-switcher { right: 10px; top: 10px; }
+            .main-container { margin-top: 90px; gap: 40px; }
+            header h1 { font-size: clamp(2.5em, 9vw, 3em); }
+            header .subtitle { font-size: clamp(1.2em, 5vw, 1.4em); }
+            .profile-pic { width: 140px; height: 140px; }
+            .section-card { padding: 30px; }
+            .social-links-grid { gap: 18px; }
+             .profile-section:hover, .section-card:hover { transform: perspective(1200px) rotateY(var(--rotateY, 0)) rotateX(var(--rotateX, 0)) translateY(-8px) scale(1.02); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+          #tsparticles-container { display: none; }
+          #scroll-progress { display: none; }
+          [data-aos] { transform: none !important; opacity: 1 !important; }
+           .profile-section:hover, .section-card:hover { transform: translateY(-5px) scale(1.01); }
+           .profile-section:hover .profile-pic { transform: scale(1.05); }
+           header h1, header .subtitle { opacity: 1; transform: none; transition: none;}
+           header h1::after { transition: none; width: 80%; }
+           .section-card:hover h2::after { transition: none; width: 65%; }
+           .section-card:hover h2 i { transform: none; opacity: 0.85; }
+           .social-links-grid a:hover { transform: scale(1.03) translateY(-4px); }
+           .social-links-grid a:hover i { transform: scale(1.05); }
+           .skills-list li:hover { transform: translateY(-3px) scale(1.04); }
+           .skills-list li:hover i { transform: none; opacity: 0.9; }
+           .skills-list li.clicked-effect { animation: none; }
+           body.lang-switching .lang-transition-element { opacity: 1 !important; transform: none !important; transition: none !important;}
+           #welcome-text { opacity: 1; transform: none; transition: none; display: none;}
+           #preloader .spinner { display: none; }
+           #preloader { display: none; }
+        }
+    </style>
+</head>
+<body data-offset="100">
+    <div id="scroll-progress"></div>
+    <div id="tsparticles-container"></div>
+    <div id="preloader">
+         <div id="welcome-text">مرحباً</div>
+        <div class="spinner"></div>
+    </div>
+    <div class="language-switcher">
+        <button id="lang-ar" class="active" title="العربية">AR</button>
+        <button id="lang-en" title="English">EN</button>
+    </div>
+     <div class="theme-switcher">
+        <button id="theme-toggle" title="Toggle Theme">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
+    </div>
+    <main class="main-container" id="main-content">
+        <section class="profile-section" data-aos="zoom-in-up" data-aos-duration="900">
+            <div class="profile-pic">
+            </div>
+            <header>
+                <h1 data-translate="name" id="main-name" class="lang-transition-element">عبد الله غيث</h1>
+                <p class="subtitle" data-translate="subtitle" id="main-subtitle" class="lang-transition-element">شاعر ومبرمج .</p>
+            </header>
+        </section>
+        <div class="links-and-skills-container">
+            <section class="section-card social-links-section" data-aos="fade-right" data-aos-duration="900" data-aos-delay="200">
+                <h2><i class="fas fa-share-alt"></i> <span data-translate="socialLinksTitle" class="lang-transition-element">الروابط الاجتماعية</span></h2>
+                <div class="social-links-grid">
+                    <a href="https://www.instagram.com/ch3uh?igsh=MXFnd3ltOG02YmI0NA==" class="instagram" target="_blank" rel="noopener noreferrer" data-translate-title="instagramTitle" title="انستقرام">
+                        <div class="icon-container"><i class="fab fa-instagram"></i></div> <span data-translate="instagram" class="lang-transition-element">انستقرام</span>
+                    </a>
+                    <a href="https://www.tiktok.com/@.3s.?_t=ZS-8vCT1tps0F6&_r=1" class="tiktok" target="_blank" rel="noopener noreferrer" data-translate-title="tiktokTitle" title="تيك توك">
+                        <div class="icon-container"><i class="fab fa-tiktok"></i></div> <span data-translate="tiktok" class="lang-transition-element">تيك توك</span>
+                    </a>
+                    <a href="https://t.me/he3uh" class="telegram-account" target="_blank" rel="noopener noreferrer" data-translate-title="telegramAccountTitle" title="حسابي على تيليجرام">
+                         <div class="icon-container"><i class="fa-regular fa-paper-plane"></i></div> <span data-translate="telegramAccount" class="lang-transition-element">حسابي</span>
+                    </a>
+                    <a href="https://t.me/ch3uh" class="telegram-channel" target="_blank" rel="noopener noreferrer" data-translate-title="telegramChannelTitle" title="قناتي العامة على تيليجرام">
+                        <div class="icon-container"><i class="fa-solid fa-satellite-dish"></i></div> <span data-translate="telegramChannel" class="lang-transition-element">قناتي العامة</span>
+                    </a>
+                    <a href="https://t.me/+J16v2RC_at80NjYy" class="telegram-private" target="_blank" rel="noopener noreferrer" data-translate-title="telegramPrivateTitle" title="قناتي الخاصة (برايفت)">
+                        <div class="icon-container"><i class="fa-solid fa-lock"></i></div> <span data-translate="telegramPrivate" class="lang-transition-element">قناتي الخاصة</span>
+                    </a>
+                     <a href="https://t.me/arPoetry1" class="telegram-poetry" target="_blank" rel="noopener noreferrer" data-translate-title="telegramPoetryTitle" title="مجموعة الشعر (گروب الشعر)">
+                        <div class="icon-container"><i class="fa-solid fa-feather-alt"></i></div> <span data-translate="telegramPoetry" class="lang-transition-element">گروب الشعر</span>
+                    </a>
+                </div>
+            </section>
+            <section class="section-card skills-section" data-aos="fade-left" data-aos-duration="900" data-aos-delay="400">
+                 <h2><i class="fas fa-code"></i> <span data-translate="skillsTitle" class="lang-transition-element">المهارات البرمجية</span></h2>
+                <ul class="skills-list" id="skills-list">
+                    <li tabindex="0">
+                        <i class="fab fa-python"></i> <span data-translate="skillPython" class="lang-transition-element">Python</span>
+                    </li>
+                    <li tabindex="0">
+                        <i class="fab fa-php"></i> <span data-translate="skillPHP" class="lang-transition-element">PHP</span>
+                    </li>
+                    <li tabindex="0">
+                         <i class="fa-solid fa-microchip"></i> <span data-translate="skillCPP" class="lang-transition-element">C++</span>
+                    </li>
+                    <li tabindex="0">
+                        <i class="fab fa-html5"></i> <span data-translate="skillHTML" class="lang-transition-element">HTML5</span>
+                    </li>
+                    <li tabindex="0">
+                        <i class="fab fa-css3-alt"></i> <span data-translate="skillCSS" class="lang-transition-element">CSS3</span>
+                    </li>
+                    <li tabindex="0">
+                        <i class="fab fa-js-square"></i> <span data-translate="skillJS" class="lang-transition-element">JavaScript</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@2.12.0/tsparticles.engine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+         const translations = {
+            ar: { pageTitle: "عبد الله غيث - شاعر ومبرمج .", loading: "جاري التحميل...", name: "عبد الله غيث", subtitle: "شاعر ومبرمج .", socialLinksTitle: "الروابط الاجتماعية", instagram: "انستقرام", instagramTitle: "انستقرام", tiktok: "تيك توك", tiktokTitle: "تيك توك", telegramAccount: "حسابي", telegramAccountTitle: "حسابي على تيليجرام", telegramChannel: "قناتي العامة", telegramChannelTitle: "قناتي العامة على تيليجرام", telegramPrivate: "قناتي الخاصة", telegramPrivateTitle: "قناتي الخاصة (برايفت)", telegramPoetry: "گروب الشعر", telegramPoetryTitle: "مجموعة الشعر (گروب الشعر)", skillsTitle: "المهارات البرمجية", skillPython: "Python", skillPHP: "PHP", skillCPP: "C++", skillHTML: "HTML5", skillCSS: "CSS3", skillJS: "JavaScript" },
+            en: { pageTitle: "Abdullah Ghaith - Poet & Programmer.", loading: "Loading...", name: "Abdullah Ghaith", subtitle: "Poet & Programmer.", socialLinksTitle: "Social Links", instagram: "Instagram", instagramTitle: "Instagram", tiktok: "TikTok", tiktokTitle: "TikTok", telegramAccount: "My Account", telegramAccountTitle: "My Telegram Account", telegramChannel: "Public Channel", telegramChannelTitle: "My Public Telegram Channel", telegramPrivate: "Private Channel", telegramPrivateTitle: "My Private Channel", telegramPoetry: "Poetry Group", telegramPoetryTitle: "Poetry Group", skillsTitle: "Programming Skills", skillPython: "Python", skillPHP: "PHP", skillCPP: "C++", skillHTML: "HTML5", skillCSS: "CSS3", skillJS: "JavaScript" }
+         };
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const preloader = document.getElementById('preloader');
+        const welcomeTextElement = document.getElementById('welcome-text');
+        const skillsList = document.getElementById('skills-list');
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const langArButton = document.getElementById('lang-ar');
+        const langEnButton = document.getElementById('lang-en');
+        const mainName = document.getElementById('main-name');
+        const mainSubtitle = document.getElementById('main-subtitle');
+        const scrollProgressBar = document.getElementById('scroll-progress');
+        let langTransitionElements;
+
+        const welcomeMessages = ["مرحباً", "Hello", "Bonjour", "Bienvenido", "Willkommen", "こんにちは"];
+        const totalWelcomeTime = 5000; // Approx 5 seconds total duration
+        const welcomeDisplayTime = totalWelcomeTime / welcomeMessages.length; // Time each message is fully visible
+        const welcomeFadeTime = 400; // Time for fade animation (ms)
+        let welcomeTimeoutShow;
+        let welcomeTimeoutNext;
+        let currentWelcomeIndex = 0;
+
+        function showNextWelcomeMessage() {
+            if (!welcomeTextElement || reduceMotion || currentWelcomeIndex >= welcomeMessages.length) {
+                hidePreloader();
+                return;
+            }
+            const msgIndex = currentWelcomeIndex;
+
+            // Fade out previous message
+            welcomeTextElement.classList.remove('visible');
+
+            // Set timeout to change text and fade in after fade out completes
+            welcomeTimeoutShow = setTimeout(() => {
+                if (welcomeTextElement) {
+                    welcomeTextElement.textContent = welcomeMessages[msgIndex];
+                    welcomeTextElement.classList.add('visible');
+                }
+                currentWelcomeIndex++;
+                // Schedule the start of the next message's fade out
+                welcomeTimeoutNext = setTimeout(showNextWelcomeMessage, welcomeDisplayTime);
+            }, welcomeFadeTime);
+        }
+
+        function setLanguage(lang) {
+            const currentLang = document.documentElement.lang;
+            if (currentLang === lang || document.body.classList.contains('lang-switching')) return;
+
+            document.body.classList.add('lang-switching');
+            if (!reduceMotion) {
+                langTransitionElements.forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(10px)';
+                });
+            }
+
+            setTimeout(() => {
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+                document.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.getAttribute('data-translate');
+                    if (translations[lang] && translations[lang][key]) {
+                        el.innerHTML = translations[lang][key];
+                    }
+                });
+                 document.querySelectorAll('[data-translate-title]').forEach(el => {
+                    const key = el.getAttribute('data-translate-title');
+                    if (translations[lang] && translations[lang][key]) {
+                        el.setAttribute('title', translations[lang][key]);
+                    }
+                });
+                langArButton.classList.toggle('active', lang === 'ar');
+                langEnButton.classList.toggle('active', lang === 'en');
+                localStorage.setItem('preferredLanguage', lang);
+
+                if (typeof AOS !== 'undefined') AOS.refreshHard();
+
+                setTimeout(() => {
+                     document.body.classList.remove('lang-switching');
+                     if (!reduceMotion) {
+                         langTransitionElements.forEach(el => {
+                             el.style.opacity = '1';
+                             el.style.transform = 'translateY(0px)';
+                         });
+                     }
+                }, 50);
+
+            }, reduceMotion ? 0 : 250);
+        }
+        langArButton.addEventListener('click', () => setLanguage('ar'));
+        langEnButton.addEventListener('click', () => setLanguage('en'));
+         function setTheme(theme) {
+             const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+             if (currentTheme === theme) return;
+             document.body.classList.toggle('light-mode', theme === 'light');
+             localStorage.setItem('preferredTheme', theme);
+             if (typeof tsParticles !== 'undefined') loadParticlesBasedOnTheme();
+         }
+         themeToggleButton.addEventListener('click', () => {
+             const currentTheme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+             setTheme(newTheme);
+         });
+
+        function hidePreloader() {
+            if (!preloader || preloader.classList.contains('hidden')) return;
+            clearTimeout(welcomeTimeoutShow); // Clear any pending timeouts
+            clearTimeout(welcomeTimeoutNext);
+            preloader.classList.add('hidden');
+             if (typeof AOS !== 'undefined') {
+                 AOS.init({ once: true, duration: 900, easing: 'ease-out-cubic', offset: 50 });
+             }
+             setTimeout(() => {
+                 if(mainName) mainName.classList.add('visible');
+                 if(mainSubtitle) mainSubtitle.classList.add('visible');
+             }, reduceMotion ? 0 : 150);
+        }
+
+        function startPreloader(){
+            if (!reduceMotion && welcomeTextElement) {
+                 setTimeout(showNextWelcomeMessage, 150); // Start the sequence immediately
+                 // hidePreloader will be called by showNextWelcomeMessage when done
+            } else {
+                 if(preloader) preloader.style.display = 'none';
+                 hidePreloader();
+            }
+        }
+
+
+         async function loadParticlesBasedOnTheme() {
+            if(reduceMotion || typeof tsParticles === 'undefined') return;
+            const isLight = document.body.classList.contains('light-mode');
+            const particleColor = isLight ? "#555b6e" : "#b0b4d1";
+            const linkColor = isLight ? "#3f51b5" : "#7367f0";
+            const particleOpacity = isLight ? 0.7 : 0.55;
+            const particleDensity = isLight ? 550 : 750;
+            const particlesOptions = {
+                fpsLimit: 60,
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: particleDensity } },
+                    color: { value: particleColor }, shape: { type: "circle" },
+                    opacity: { value: {min: 0.1, max: particleOpacity}, animation: { enable: true, speed: 0.7, minimumValue: 0.1, sync: false } },
+                    size: { value: {min: 1, max: 3.8}, animation: { enable: true, speed: 2.8, minimumValue: 0.5, sync: false } },
+                    links: { enable: true, distance: 170, color: linkColor, opacity: 0.3, width: 1 },
+                    move: { enable: true, speed: 1.2, direction: "none", random: true, straight: false, outModes: "out" }
+                },
+                interactivity: {
+                    events: { onHover: { enable: true, mode: "bubble" }, onClick: { enable: true, mode: "push" }, resize: true },
+                    modes: { grab: { distance: 160, links: { opacity: 0.6 } }, bubble: { distance: 240, size: 7.5, duration: 1.5, opacity: 1 }, repulse: { distance: 120 }, push: { quantity: 4 }, remove: { quantity: 2 } }
+                }, detectRetina: true,
+            };
+             try { await tsParticles.load("tsparticles-container", particlesOptions); } catch(error){ console.error("Error loading tsParticles:", error); }
+         }
+        if (skillsList) {
+            skillsList.addEventListener('click', function(event) {
+                const skillItem = event.target.closest('li[tabindex="0"]');
+                if (skillItem && !reduceMotion) { skillItem.classList.add('clicked-effect'); setTimeout(() => { skillItem.classList.remove('clicked-effect'); }, 450); }
+            });
+            skillsList.addEventListener('keydown', function(event) {
+                 const skillItem = event.target.closest('li[tabindex="0"]');
+                 if(skillItem && (event.key === 'Enter' || event.key === ' ')){ event.preventDefault(); if(!reduceMotion) { skillItem.classList.add('clicked-effect'); setTimeout(() => { skillItem.classList.remove('clicked-effect'); }, 450); } }
+            });
+        }
+         function handleCardTilt(event) {
+             if (reduceMotion) return;
+             requestAnimationFrame(() => {
+                 const card = event.currentTarget;
+                 const { left, top, width, height } = card.getBoundingClientRect();
+                 const x = event.clientX - left;
+                 const y = event.clientY - top;
+                 const rotateX = ((y / height) - 0.5) * -20;
+                 const rotateY = ((x / width) - 0.5) * 20;
+                 card.style.setProperty('--rotateX', `${rotateX}deg`);
+                 card.style.setProperty('--rotateY', `${rotateY}deg`);
+             });
+         }
+         function resetCardTilt(event) {
+             if (reduceMotion) return;
+             const card = event.currentTarget;
+             requestAnimationFrame(() => {
+                card.style.setProperty('--rotateX', '0deg');
+                card.style.setProperty('--rotateY', '0deg');
+             });
+         }
+         document.querySelectorAll('.profile-section, .section-card').forEach(card => {
+             card.addEventListener('mousemove', handleCardTilt);
+             card.addEventListener('mouseleave', resetCardTilt);
+         });
+        function updateScrollProgress() {
+            if(!scrollProgressBar || reduceMotion) return;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercentage = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            scrollProgressBar.style.width = `${scrollPercentage}%`;
+            requestAnimationFrame(updateScrollProgress);
+        }
+        if(!reduceMotion) requestAnimationFrame(updateScrollProgress);
+
+        const preferredLanguage = localStorage.getItem('preferredLanguage') || 'ar';
+        const preferredTheme = localStorage.getItem('preferredTheme') || 'dark';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            langTransitionElements = document.querySelectorAll('.lang-transition-element');
+            setLanguage(preferredLanguage);
+            setTheme(preferredTheme);
+            if (typeof tsParticles !== 'undefined') loadParticlesBasedOnTheme();
+            startPreloader();
+        });
+
+    </script>
+</body>
+</html>
