@@ -35,10 +35,8 @@
             background: var(--bg-dark);
             color: var(--text-primary);
             min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow-y: auto;
+            display: block;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -88,7 +86,7 @@
             height: 100%;
             background: linear-gradient(0deg, transparent 50%, rgba(0, 255, 155, 0.03) 50%);
             background-size: 100% 4px;
-            animation: moveScanline 10s linear infinite;
+            animation: moveScanline 30s linear infinite;
             pointer-events: none;
             z-index: 1;
         }
@@ -100,10 +98,14 @@
         .container {
             position: relative;
             z-index: 2;
-            padding: 20px;
+            padding: 50px 20px;
             width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
             display: flex;
             justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 100px);
         }
 
         .terminal {
@@ -123,6 +125,8 @@
             transition: opacity 0.4s ease, transform 0.4s ease;
             position: relative;
             overflow: hidden;
+            min-height: 500px;
+            max-height: calc(100vh - 100px);
         }
 
         @keyframes terminalFadeIn {
@@ -148,6 +152,7 @@
             height: 12px;
             border-radius: 50%;
             transition: transform 0.2s ease, filter 0.2s ease;
+            cursor: pointer;
         }
         
         .header-button:hover {
@@ -231,6 +236,7 @@
             overflow: hidden;
             transform: translateY(10px);
             opacity: 0;
+            cursor: pointer;
         }
 
         .link.visible {
@@ -312,10 +318,21 @@
 
         @media (max-width: 768px) {
             html { cursor: auto; }
-            .terminal-body { padding: 20px; font-size: 1em; }
+            .terminal-body { 
+                padding: 20px;
+                font-size: 1em;
+            }
             .identity-name { font-size: 2.2em; }
             .identity-title { font-size: 1em; }
             .cursor-follower, .cursor-dot { display: none; }
+            .container {
+                padding: 20px 10px;
+                min-height: calc(100vh - 40px);
+            }
+            .terminal {
+                border-radius: 0;
+                max-height: calc(100vh - 40px);
+            }
         }
     </style>
 </head>
