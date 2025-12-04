@@ -21,6 +21,18 @@ function init() {
             p.addEventListener('mouseleave', rstT);
         });
     }
+
+    const nxt = document.querySelector('.nav-next');
+    if (nxt) {
+        nxt.addEventListener('click', (e) => {
+            e.preventDefault();
+            const ns = Array.from(document.querySelectorAll('.nav-item'));
+            const i = ns.findIndex(x => x.classList.contains('active'));
+            const j = (i + 1) % ns.length;
+            const t = ns[j].getAttribute('href').substring(1);
+            swPg(t);
+        });
+    }
 }
 
 function secure() {
